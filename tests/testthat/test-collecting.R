@@ -10,7 +10,4 @@ all_bl <- join_full_audio_video(audiostats, videostats, "allofthem.csv")
 
 all_bl <- add_chi_noun_onset(all_bl)
 
-# count_experimentwords(all_bl)
-# count_mot_fat(all_bl)
-
 all_bl_agg <- big_aggregate(all_bl)
