@@ -32,7 +32,7 @@ collect_bl_files <- function(input, type) {
 #' @export
 #'
 #' @examples
-concat_month_bl <- function(input, output, type) {
+concat_month_bl <- function(input, output=NULL, type) {
   if (!(type %in% bl_types)) {
     stop("your file type is not recognized")
   }
@@ -60,11 +60,13 @@ concat_month_bl <- function(input, output, type) {
   out_ext <- paste0("_all_", type, ".csv")
   by_month <- the_files %>% split(.$month) %>% map(read_all)
 
-  for (name in names(by_month)) {
-    write.csv(x=by_month[[name]],
-              file=file.path(output,
-                             paste0(name, out_ext)),
-              row.names = FALSE)
+  if (!is.null(output)) {
+    for (name in names(by_month)) {
+      write.csv(x=by_month[[name]],
+                file=file.path(output,
+                               paste0(name, out_ext)),
+                row.names = FALSE)
+    }
   }
   return(by_month)
 }
