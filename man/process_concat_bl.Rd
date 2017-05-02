@@ -13,7 +13,11 @@ process_concat_bl(x)
 processed basic level dataframe
 }
 \description{
+Post-processing includes adding a subject and month column, whether
+it's an audio or video, and reformatting timestamps.
+}
+\details{
 The function will figure out whether it's an audio or video dataframe.
 It must be one or the other though. It will not handle a joined audio+video
-frame
+frame.
 }

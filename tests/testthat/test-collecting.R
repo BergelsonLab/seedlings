@@ -1,9 +1,9 @@
 library(seedlings)
 
-audiomonths <- concat_month_bl("../basiclevel_dataprep/all_bl/", "output/", "audio")
+audiomonths <- concat_month_bl("../all_bl/", "output/", "audio")
 audiostats <- concat_all_bl(audiomonths, "all_audio.csv")
 
-videomonths <- concat_month_bl("../basiclevel_dataprep/all_bl/", "output/", "video")
+videomonths <- concat_month_bl("../all_bl/", "output/", "video")
 videostats <- concat_all_bl(videomonths, "all_video.csv")
 
 all_bl <- join_full_audio_video(audiostats, videostats, "allofthem.csv")

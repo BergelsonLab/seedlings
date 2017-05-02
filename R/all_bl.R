@@ -17,7 +17,6 @@ basic_level_tested_words <- c("baby","babies","babe","baby+doll",
 
 add_chi_noun_onset <- function(x) {
   x%>%
-    #adding in noun onset
     filter(speaker == "CHI")%>%
     group_by(subj)%>%
     summarise(noun_chi_onset = min(as.numeric(as.character(month))))%>%

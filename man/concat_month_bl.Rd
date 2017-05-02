@@ -14,7 +14,7 @@ concat_month_bl(input, output, type)
 \item{type}{basic level datatype ("audio" or "video")}
 }
 \value{
-a list of tibbles, each tibble a month's basic level
+a list of tibbles, each tibble a month's aggregated basic level
 }
 \description{
 Concatenate basic level files by month

@@ -28,7 +28,7 @@ collect_bl_files <- function(input, type) {
 #' @param output directory to write concatenated by-month basic level files to
 #' @param type basic level datatype ("audio" or "video")
 #'
-#' @return a list of tibbles, each tibble a month's basic level
+#' @return a list of tibbles, each tibble a month's aggregated basic level
 #' @export
 #'
 #' @examples
@@ -41,7 +41,6 @@ concat_month_bl <- function(input, output, type) {
 
   read_one_video <- function(x) {
     df <- read_csv(x) %>% rename_video_header(.)
-
     add_column(df, id=rep(basename(x), times=length(df$object)))
   }
 
@@ -59,11 +58,8 @@ concat_month_bl <- function(input, output, type) {
   }
 
   out_ext <- paste0("_all_", type, ".csv")
-
   by_month <- the_files %>% split(.$month) %>% map(read_all)
 
-  # for each dataframe in the by_month list,
-  # write it out to a csv in the output directory
   for (name in names(by_month)) {
     write.csv(x=by_month[[name]],
               file=file.path(output,
@@ -145,9 +141,12 @@ join_full_audio_video <- function(audiostats, videostats, output=NULL) {
 
 #' Post-processing for the full basic level dataframe
 #'
+#' Post-processing includes adding a subject and month column, whether
+#' it's an audio or video, and reformatting timestamps.
+#'
 #' The function will figure out whether it's an audio or video dataframe.
 #' It must be one or the other though. It will not handle a joined audio+video
-#' frame
+#' frame.
 #'
 #' @param x full (audio or video) basic level dataframe
 #'
@@ -157,7 +156,7 @@ join_full_audio_video <- function(audiostats, videostats, output=NULL) {
 #' @examples
 process_concat_bl <- function(x) {
   if ("tier" %in% colnames(x)) {
-    x <- x %>%
+    x %>%
       separate(timestamp,sep = "_",into = c("onset","offset"))%>%
       mutate(subj = factor(substring(id, 1,2)),
              month = factor(substring(id,4,5)),
@@ -166,7 +165,7 @@ process_concat_bl <- function(x) {
              onset = as.numeric(as.character(onset)),
              offset = as.numeric(as.character(offset)))
   } else {
-    x <- x %>%
+    x %>%
       mutate(subj = factor(substring(id, 1,2)),
              month = factor(substring(id,4,5)),
              SubjectNumber = factor(substring(id,1,5)),
